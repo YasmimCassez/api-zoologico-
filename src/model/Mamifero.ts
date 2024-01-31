@@ -12,7 +12,7 @@ class Mamifero extends Animal{
                 this.raca = _raca;
             }
 /**
-     * Retorna o nome do animal
+     * Retorna a raca do animal
      * 
      * @returns raca : raca do animal
      */
@@ -21,7 +21,7 @@ public getRaca(): string {
 }
 
 /**
- * Atribui o parâmetro ao atributo nome
+ * Atribui o parâmetro ao atributo raca
  * 
  * @param _raca : raca do animal
  */

@@ -19,8 +19,9 @@ export class Zoologico {
 
     constructor(_nome:string,
                 _lista_de_atracoes: Array<Atracao>){
+                    
       // Inicializa as propriedades do zoológico com os valores passados como parâmetros.//
-      
+
                     this.nome = _nome;
                     this.lista_de_atracoes = _lista_de_atracoes;
                 }

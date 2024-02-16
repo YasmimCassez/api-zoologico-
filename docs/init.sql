@@ -1,3 +1,21 @@
+CREATE TABLE reptil (id SERIAL NOT NULL PRIMARY KEY, 
+					 nome VARCHAR(50) NOT NULL,
+					 idade INT,
+					 genero VARCHAR(12) NOT NULL,
+					 tipo_de_escamas VARCHAR(50));
+					 
+CREATE TABLE ave(id SERIAL NOT NULL PRIMARY KEY,
+					nome VARCHAR(50) NOT NULL,
+					idade INT,
+					genero VARCHAR(12) NOT NULL,
+					envergadura FLOAT);
+					
+CREATE TABLE mamifero (id SERIAL NOT NULL PRIMARY KEY,
+						nome VARCHAR(50) NOT NULL,
+						idade INT,
+						genero VARCHAR(12) NOT NULL,
+						raca VARCHAR(30));
+
 INSERT INTO mamifero (nome, idade, genero, raca)
   VALUES
   ('Simba', 2, 'Macho', 'Leão'),

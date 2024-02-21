@@ -4,6 +4,8 @@ import { Ave } from './model/Ave';
 import { Habitat } from './model/Habitat';
 import { Atracao } from './model/Atracao';
 import { Zoologico } from './model/Zoologico';
+import { DatabaseModel } from './model/DatabaseModel';
+import { Reptil } from './model/Reptil';
 
 const port = 3000;
 
@@ -43,7 +45,19 @@ server.post('/zoologico', (req,res) => {
     console.log(zoo);
     res.status (200).json('Zoologico criado');
 })
+server.get('/reptil', async (req, res) => {
+    const repteis = await Reptil.listarRepteis();
 
-server.listen(port, () => {
-    console.log('Servidor está escutando no endereço http://localhost:${port}');
+    res.status(200).json(repteis);
 })
+
+new DatabaseModel().testeConexao().then((resbd) => {
+    if(resbd){
+        server.listen(port, () => {
+            console.log('Servidor está escutando no endereço http://localhost:${port}');
+        })
+    
+    } else{
+        console.log('Não foi possivel conectar ao banco de dados')
+    }
+});

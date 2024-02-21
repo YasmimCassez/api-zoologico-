@@ -1,5 +1,8 @@
 // Importa a classe Animal do arquivo Animal.ts.//
 import { Animal } from "./Animal";
+import { DatabaseModel } from "./DatabaseModel";
+
+const database = new DatabaseModel().pool;
 
 // Declaração da classe Reptil que herda de Animal.//
 
@@ -45,5 +48,25 @@ public getTipo_de_escamas(): string {
 public setTipo_de_escamas(_tipo_de_escamas: string){
     this.tipo_de_escamas = _tipo_de_escamas;
 
+} 
+
+static async listarRepteis() {
+    const listaDeRepteis: Array<Reptil> = [];
+    try {
+        const queryReturn = await database.query(`SELECT * FROM  reptil WHERE tipo_de_escamas = 'Escudos'`);
+        queryReturn.rows.forEach(reptil => {
+            listaDeRepteis.push(reptil);
+        });
+
+        // só pra testar se a lista veio certa do banco
+        console.log(listaDeRepteis);
+
+        return listaDeRepteis;
+    } catch (error) {
+        console.log('Erro no modelo');
+        console.log(error);
+        return "error";
+    }
 }
+
 }

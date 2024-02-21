@@ -41,3 +41,4 @@ INSERT INTO reptil (nome, idade, genero, tipo_de_escamas)
 -- SELECT * FROM AVE;
 -- SELECT * FROM mamifero;
 -- SELECT * FROM REPTIL;
+

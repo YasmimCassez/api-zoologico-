@@ -1,72 +1,85 @@
-// Importa a classe Animal do arquivo Animal.ts.//
+
 import { Animal } from "./Animal";
 import { DatabaseModel } from "./DatabaseModel";
 
 const database = new DatabaseModel().pool;
 
-// Declaração da classe Reptil que herda de Animal.//
-
-export class Reptil extends Animal {
-// Propriedade privada que representa o tipo de escamas do réptil.//
-    private tipo_de_escamas: string;
-
 /**
-     * Construtor da classe Reptil.
-     * 
-     * @param _tipo_de_escamas Tipo de escamas do réptil.
-     * @param _nome Nome do réptil.
-     * @param _idade Idade do réptil.
-     * @param _genero Gênero do réptil.
-     */
-
-    constructor(_tipo_de_escamas:string,
-        _nome:string,
-        _idade:number,
-        _genero:string) {
-    // Chama o construtor da classe pai (Animal) com os parâmetros fornecidos.//
-        
-        super(_nome, _idade, _genero);
-
-    // Inicializa a propriedade tipo_de_escamas com o valor fornecido.//
-
-        this.tipo_de_escamas = _tipo_de_escamas;
-    }
-     /**
-     * Retorna o tipo-de-escamas do animal
-     * 
-     * @returns tipo-de-escamas :tipo-de-escamas do animal
-     */
-public getTipo_de_escamas(): string {
-    return this.tipo_de_escamas;
-}
-
-/**
- * Atribui o parâmetro ao atributo tipo-de-escamas
- * 
- * @param _tipo-de-escamas : tipo-de-escamas do animal
+ * Representa um réptil no zoológico, que é uma subclasse de Animal.
  */
-public setTipo_de_escamas(_tipo_de_escamas: string){
-    this.tipo_de_escamas = _tipo_de_escamas;
+export class Reptil extends Animal {
+    /**
+     * O tipo de escamas do réptil.
+     */
+    private tipo_escamas: string;
 
-} 
-
-static async listarRepteis() {
-    const listaDeRepteis: Array<Reptil> = [];
-    try {
-        const queryReturn = await database.query(`SELECT * FROM  reptil WHERE tipo_de_escamas = 'Escudos'`);
-        queryReturn.rows.forEach(reptil => {
-            listaDeRepteis.push(reptil);
-        });
-
-        // só pra testar se a lista veio certa do banco
-        console.log(listaDeRepteis);
-
-        return listaDeRepteis;
-    } catch (error) {
-        console.log('Erro no modelo');
-        console.log(error);
-        return "error";
+    /**
+     * Cria uma nova instância de Reptil.
+     * 
+     * @param _nome O nome do réptil.
+     * @param _idade A idade do réptil.
+     * @param _genero O gênero do réptil.
+     * @param _tipo_escamas O tipo de escamas do réptil.
+     */
+    constructor(_nome: string, 
+                _idade: number, 
+                _genero: string, 
+                _tipo_escamas: string) {
+        super(_nome, _idade, _genero);
+        this.tipo_escamas = _tipo_escamas;
     }
-}
 
+    /**
+     * Obtém o tipo de escamas do réptil.
+     * 
+     * @returns O tipo de escamas do réptil.
+     */
+    public getTipoEscamas(): string {
+        return this.tipo_escamas;
+    }
+
+    /**
+     * Define o tipo de escamas do réptil.
+     * 
+     * @param _tipo_escamas O tipo de escamas a ser atribuído ao réptil.
+     */
+    public setTipoEscamas(_tipo_escamas: string): void {
+        this.tipo_escamas = _tipo_escamas;
+    }
+
+    static async listarRepteis() {
+        const listaDeRepteis: Array<Reptil> = [];
+        try {
+            const queryReturn = await database.query(`SELECT * FROM  reptil`);
+            queryReturn.rows.forEach(reptil => {
+                listaDeRepteis.push(reptil);
+            });
+
+            // só pra testar se a lista veio certa do banco
+            console.log(listaDeRepteis);
+
+            return listaDeRepteis;
+        } catch (error) {
+            console.log('Erro no modelo');
+            console.log(error);
+            return "error";
+        }
+    }
+
+    static async cadastrarReptil(reptil: Reptil): Promise<any> {
+        try {
+            let insertResult = false;
+            await database.query(`INSERT INTO reptil (nome, idade, genero, tipo_de_escamas)
+                VALUES
+                ('${reptil.getNome().toUpperCase()}', ${reptil.getIdade()}, '${reptil.getGenero().toUpperCase()}', '${reptil.getTipoEscamas().toUpperCase()}');
+            `).then((result) => {
+                if(result.rowCount != 0) {
+                    insertResult = true;
+                }
+            });
+            return insertResult;
+        } catch(error) {
+            return error;
+        }
+    }
 }
